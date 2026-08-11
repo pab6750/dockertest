@@ -1,0 +1,23 @@
+# escape=`
+
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Download and install MinGW-w64 (GCC for Windows)
+RUN Invoke-WebRequest -Uri 'https://github.com/niXman/mingw-builds-binaries/releases/download/13.2.0-rt_v11-rev1/x86_64-13.2.0-release-posix-seh-ucrt-rt_v11-rev1.7z' -OutFile C:\mingw.7z; `
+    Invoke-WebRequest -Uri 'https://www.7-zip.org/a/7zr.exe' -OutFile C:\7zr.exe; `
+    Start-Process C:\7zr.exe -ArgumentList 'x', 'C:\mingw.7z', '-oC:\' -Wait -NoNewWindow; `
+    Remove-Item C:\mingw.7z, C:\7zr.exe -Force
+
+# Add MinGW to PATH
+RUN $env:PATH = 'C:\mingw64\bin;' + $env:PATH; `
+    [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine)
+
+WORKDIR C:\src
+
+COPY src src
+
+RUN mkdir C:\out
+
+CMD powershell -Command "C:\mingw64\bin\g++.exe -o C:\out\hello.exe src\main.cpp"

@@ -1,0 +1,17 @@
+﻿# escape=`
+
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+SHELL ["cmd", "/S", "/C"]
+
+# Copy Build Tools installer
+ADD https://aka.ms/vs/17/release/vs_BuildTools.exe C:\TEMP\vs_buildtools.exe
+
+# Install Visual Studio C++ Build Tools
+RUN C:\TEMP\vs_buildtools.exe --installPath C:\BuildTools --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.Windows11SDK.22621 || IF "%ERRORLEVEL%"=="3010" EXIT 0
+
+WORKDIR C:\src
+
+COPY src src
+
+CMD call "C:\BuildTools\Common7\Tools\VsDevCmd.bat" && cl /EHsc src\main.cpp /Fe:hello.exe && copy hello.exe C:\out\

@@ -1,0 +1,16 @@
+﻿# escape=`
+
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+WORKDIR C:\src
+COPY src src
+
+RUN mkdir C:\out
+
+# Create a simple C# wrapper that does the same thing
+RUN powershell -NoProfile -Command "                            ` 
+  [String]$code = 'using System; class Program { static void Main() { Console.WriteLine(\"Hello, World!\"); } }'; `
+  Add-Type -TypeDefinition $code -OutputAssembly C:\out\hello.exe -OutputType ConsoleApplication `
+"
+
+CMD C:\out\hello.exe
