@@ -1,0 +1,11 @@
+﻿# escape=`
+
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+WORKDIR C:\out
+
+COPY .\x64\Release\test.txt C:\out\test.txt
+
+COPY .\x64\Release\dockertest.exe C:\out\dockertest.exe
+
+#CMD ["C:\\out\\dockertest.exe"]

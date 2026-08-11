@@ -2,8 +2,16 @@
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
-WORKDIR C:\out
+WORKDIR C:\app
 
-COPY hello.exe C:\out\hello.exe
+COPY .\x64\Release\test.txt C:\app\test.txt
 
-CMD ["C:\\out\\hello.exe"]
+COPY .\x64\Release\dockertest.exe C:\app\dockertest.exe
+
+# Create a separate directory for output that can be mounted
+RUN mkdir C:\output
+
+#COPY C:\app\test.txt C:\output\test.txt
+#COPY C:\app\dockertest.exe C:\output\dockertest.exe
+
+CMD cmd /c "copy C:\app\*.* C:\output\"

@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="dockertest/dockertest.vcxproj" />
+  <Project Path="dockertest/dockertest.vcxproj" Id="45d819ee-6aed-4b5c-9cac-cb57ab4ee04a" />
 </Solution>

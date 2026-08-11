@@ -9,8 +9,8 @@
 out/
 build/
 [Dd]ebug/
-[Rr]elease/
-x64/
+#[Rr]elease/
+# x64/  # Commented out - needed for Docker COPY
 x86/
 [Bb]in/
 [Oo]bj/
@@ -23,7 +23,6 @@ cmake_install.cmake
 !CMakeLists.txt
 
 # Compiled executables
-*.exe
 *.dll
 *.obj
 *.pdb
